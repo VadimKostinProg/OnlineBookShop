@@ -35,5 +35,20 @@ namespace BookShop.Core.DTO
 
         [Required]
         public string ImageUrl { get; set; } = null!;
+
+        public Product ToProduct()
+        {
+            return new Product()
+            {
+                Id = Guid.NewGuid(),
+                Title = this.Title,
+                Description = this.Description,
+                ISBN = this.ISBN,
+                Author = this.Author,
+                Price = this.Price,
+                CategoryId = this.CategoryId,
+                ImageUrl = this.ImageUrl,
+            };
+        }
     }
 }

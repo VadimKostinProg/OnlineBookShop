@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dimain.Entities;
 
 namespace BookShop.Core.DTO
 {
@@ -36,5 +37,20 @@ namespace BookShop.Core.DTO
 
         [Required]
         public string ImageUrl { get; set; } = null!;
+
+        public Product ToProduct()
+        {
+            return new Product()
+            {
+                Id = this.Id,
+                Title = this.Title,
+                Description = this.Description,
+                ISBN = this.ISBN,
+                Author = this.Author,
+                Price = this.Price,
+                CategoryId = this.CategoryId,
+                ImageUrl = this.ImageUrl,
+            };
+        }
     }
 }

@@ -5,6 +5,8 @@ using BookShop.Infrastructure.Repositories;
 using BookShop.Core.Domain.RepositoryContracts;
 using BookShop.Core.Domain.Entities;
 using Microsoft.Extensions.DependencyInjection;
+using BookShop.Infrastructure;
+using BookShop.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,7 +33,8 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = "/Identity/Account/AccessDenied";
 });
 
-builder.Services.AddScoped<IRepository, RepositoryBase>();
+builder.Services.AddInfrastructure();
+builder.Services.AddCore();
 
 builder.Services.AddRazorPages();
 

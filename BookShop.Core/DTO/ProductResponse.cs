@@ -29,4 +29,23 @@ namespace BookShop.Core.DTO
 
         public string ImageUrl { get; set; } = null!;
     }
+
+    public static class ProductExt
+    {
+        public static ProductResponse ToProductResponse(this Product product)
+        {
+            return new ProductResponse()
+            {
+                Id = product.Id,
+                Title = product.Title,
+                Description = product.Description,
+                ISBN = product.ISBN,
+                Author = product.Author,
+                Price = product.Price,
+                CategoryId = product.CategoryId,
+                CategoryName = product.Category.Name,
+                ImageUrl = product.ImageUrl,
+            };
+        }
+    }
 }

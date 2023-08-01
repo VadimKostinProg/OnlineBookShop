@@ -20,13 +20,11 @@ namespace BookShop.Infrastructure.Repositories
             _dbContext = context;
         }
 
-        public async Task<T> AddAsync<T>(T entity) where T : EntityBase
+        public async Task AddAsync<T>(T entity) where T : EntityBase
         {
             _dbContext.Set<T>().Add(entity);
 
             await _dbContext.SaveChangesAsync();
-
-            return entity;
         }
 
         public async Task<bool> DeleteAsync<T>(Guid id) where T : EntityBase
@@ -50,17 +48,14 @@ namespace BookShop.Infrastructure.Repositories
             return Task.FromResult(_dbContext.Set<T>().Any(predicate));
         }
 
-        public async Task<T?> FirstOrDefaultAsync<T>(Expression<Func<T, bool>> predicate) where T : EntityBase
+        public async Task<T?> FirstOrDefaultAsync<T>(Expression<Func<T, bool>> predicate, params string[] includeStrings) where T : EntityBase
         {
-            return await _dbContext.Set<T>().FindAsync(predicate);
+            var query = (await this.GetAllAsync<T>(predicate: null, includeStrings)).AsQueryable();
+
+            return await query.FirstOrDefaultAsync(predicate);
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync<T>() where T : EntityBase
-        {
-            return await _dbContext.Set<T>().ToListAsync();
-        }
-
-        public async Task<IEnumerable<T>> GetAsync<T>(Expression<Func<T, bool>>? predicate = null, params string[] includeStrings) where T : EntityBase
+        public async Task<IEnumerable<T>> GetAllAsync<T>(Expression<Func<T, bool>>? predicate = null, params string[] includeStrings) where T : EntityBase
         {
             var query = _dbContext.Set<T>().AsQueryable();
 
@@ -77,9 +72,11 @@ namespace BookShop.Infrastructure.Repositories
             return await query.ToListAsync();
         }
 
-        public async Task<T?> GetByIdAsync<T>(Guid id) where T : EntityBase
+        public async Task<T?> GetByIdAsync<T>(Guid id, params string[] includeStrings) where T : EntityBase
         {
-            return await _dbContext.Set<T>().FindAsync(id);
+            var query = (await this.GetAllAsync<T>(predicate: null, includeStrings)).AsQueryable();
+
+            return await query.FirstOrDefaultAsync(entity => entity.Id == id);
         }
 
         public async Task UpdateAsync<T>(T entity) where T : EntityBase

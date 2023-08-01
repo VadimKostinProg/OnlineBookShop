@@ -32,7 +32,7 @@ namespace BookShop.Core.Services
                 throw new ArgumentException("Category with such display order alreay exists.");
 
             var category = request.ToCategory();
-            await _repository.AddAsync<Category>(category);
+            await _repository.AddAsync(category);
 
             return category.ToCategoryResponse();
         }

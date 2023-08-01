@@ -17,34 +17,30 @@ namespace BookShop.Core.Domain.RepositoryContracts
         /// Method for reading all rows from the table related to passed entity.
         /// </summary>
         /// <typeparam name="T">Entity type to read table rows.</typeparam>
-        /// <returns>Collection IEnumerable of entity objects.</returns>
-        Task<IEnumerable<T>> GetAllAsync<T>() where T : EntityBase;
-
-        /// <summary>
-        /// Method for reading filtered rows from the table related to the passed entity.
-        /// </summary>
-        /// <typeparam name="T">Entity type to read table rows.</typeparam>
         /// <param name="predicate">Expression to filter objects.</param>
         /// <param name="includeStrings">Include strings for objects of other entities.</param>
         /// <returns>Collection IEnumerable of entity objects.</returns>
-        Task<IEnumerable<T>> GetAsync<T>(Expression<Func<T, bool>>? predicate = null,
-                                         params string[] includeStrings) where T : EntityBase;
+        Task<IEnumerable<T>> GetAllAsync<T>(Expression<Func<T, bool>>? predicate = null,
+                                            params string[] includeStrings) where T : EntityBase;
 
         /// <summary>
         /// Method for reading single entity from the table by it`s primary key.
         /// </summary>
         /// <typeparam name="T">Entity type to read.</typeparam>
         /// <param name="id">Guid of entity to read.</param>
+        /// <param name="includeStrings">Include strings for objects of other entities.</param>
         /// <returns>Found entity with passed guid, null - if entity is not found.</returns>
-        Task<T?> GetByIdAsync<T>(Guid id) where T : EntityBase;
+        Task<T?> GetByIdAsync<T>(Guid id, params string[] includeStrings) where T : EntityBase;
 
         /// <summary>
         /// Method for reading first object which satisfy passed condition.
         /// </summary>
         /// <typeparam name="T">Entity type to read.</typeparam>
         /// <param name="predicate">Condition to search object.</param>
+        /// <param name="includeStrings">Include strings for objects of other entities.</param>
         /// <returns>Found entity object, null - if object with passed conditions is not found.</returns>
-        Task<T?> FirstOrDefaultAsync<T>(Expression<Func<T, bool>> predicate) where T : EntityBase;
+        Task<T?> FirstOrDefaultAsync<T>(Expression<Func<T, bool>> predicate,
+                                        params string[] includeStrings) where T : EntityBase;
 
         /// <summary>
         /// Method for checking the object for existance in the table.
@@ -59,8 +55,7 @@ namespace BookShop.Core.Domain.RepositoryContracts
         /// </summary>
         /// <typeparam name="T">Entity type which indicades the table to insert new row.</typeparam>
         /// <param name="entity">Entity to insert.</param>
-        /// <returns>Inserted entity.</returns>
-        Task<T> AddAsync<T>(T entity) where T : EntityBase;
+        Task AddAsync<T>(T entity) where T : EntityBase;
 
         /// <summary>
         /// Method for updating existing row in the table.
