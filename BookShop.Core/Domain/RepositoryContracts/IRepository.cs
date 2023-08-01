@@ -39,6 +39,22 @@ namespace BookShop.Core.Domain.RepositoryContracts
         Task<T?> GetByIdAsync<T>(Guid id) where T : EntityBase;
 
         /// <summary>
+        /// Method for reading first object which satisfy passed condition.
+        /// </summary>
+        /// <typeparam name="T">Entity type to read.</typeparam>
+        /// <param name="predicate">Condition to search object.</param>
+        /// <returns>Found entity object, null - if object with passed conditions is not found.</returns>
+        Task<T?> FirstOrDefaultAsync<T>(Expression<Func<T, bool>> predicate) where T : EntityBase;
+
+        /// <summary>
+        /// Method for checking the object for existance in the table.
+        /// </summary>
+        /// <typeparam name="T">Entity type to check object for existance.</typeparam>
+        /// <param name="predicate">Condition for checking the object for existance.</param>
+        /// <returns>True - if object with passed condition exists, otherwise - false.</returns>
+        Task<bool> ExistsAsync<T>(Expression<Func<T, bool>> predicate) where T : EntityBase;
+
+        /// <summary>
         /// Method for inserting new row into the table.
         /// </summary>
         /// <typeparam name="T">Entity type which indicades the table to insert new row.</typeparam>

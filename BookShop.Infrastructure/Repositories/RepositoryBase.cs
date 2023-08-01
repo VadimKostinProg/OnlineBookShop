@@ -45,6 +45,16 @@ namespace BookShop.Infrastructure.Repositories
             return true;
         }
 
+        public Task<bool> ExistsAsync<T>(Expression<Func<T, bool>> predicate) where T : EntityBase
+        {
+            return Task.FromResult(_dbContext.Set<T>().Any(predicate));
+        }
+
+        public async Task<T?> FirstOrDefaultAsync<T>(Expression<Func<T, bool>> predicate) where T : EntityBase
+        {
+            return await _dbContext.Set<T>().FindAsync(predicate);
+        }
+
         public async Task<IEnumerable<T>> GetAllAsync<T>() where T : EntityBase
         {
             return await _dbContext.Set<T>().ToListAsync();

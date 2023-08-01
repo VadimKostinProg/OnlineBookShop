@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dimain.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -18,5 +19,15 @@ namespace BookShop.Core.DTO
 
         [Range(1, 100)]
         public int DisplayOrder { get; set; }
+
+        public Category ToCategory()
+        {
+            return new Category()
+            {
+                Id = this.Id,
+                Name = this.Name,
+                DisplayOrder = this.DisplayOrder
+            };
+        }
     }
 }

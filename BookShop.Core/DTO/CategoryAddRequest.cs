@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using Dimain.Entities;
 
 namespace BookShop.Core.DTO
 {
@@ -12,5 +13,15 @@ namespace BookShop.Core.DTO
         [DisplayName("Display order")]
         [Range(1, 100)]
         public int DisplayOrder { get; set; }
+
+        public Category ToCategory()
+        {
+            return new Category()
+            {
+                Id = Guid.NewGuid(),
+                Name = this.Name,
+                DisplayOrder = this.DisplayOrder,
+            };
+        }
     }
 }
