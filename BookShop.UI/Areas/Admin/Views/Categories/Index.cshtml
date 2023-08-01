@@ -1,0 +1,47 @@
+﻿@model IEnumerable<CategoryResponse>
+
+@{
+    ViewBag.Title = "Categories";
+}
+
+@*<partial name="_Notification" />*@
+
+<div class="container">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Category List</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Categories" asp-action="Create" class="btn btn-primary mb-3">
+                <i class="bi bi-plus-circle"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Category Name</th>
+            <th>Display Order</th>
+            <th style="width:15%">Options</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (CategoryResponse category in Model)
+        {
+            <tr>
+                <td>@category.Name</td>
+                <td>@category.DisplayOrder</td>
+                <td style="width:15%">
+                    <a asp-controller="Categories" asp-action="Edit" asp-route-CategoryResponseId="@category.Id" class="btn btn-dark mb-2">
+                        <i class="bi bi-pencil-square"></i>
+                    </a>
+                    <a asp-controller="Categories" asp-action="Delete" asp-route-CategoryResponseId="@category.Id" class="btn btn-danger mb-2">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

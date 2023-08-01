@@ -1,0 +1,47 @@
+﻿@model Category
+
+@{
+    ViewBag.Title = "Edit Category";
+}
+
+<form asp-controller="Categories" asp-action="Edit" method="post">
+    <h2 class="text-primary mt-3">
+        Update Category
+    </h2>
+
+    <input asp-for="Id" hidden />
+    <div class="container border p-3 pt-4">
+        <div class="row mb-3">
+            <div class="col-6">
+                <label asp-for="Name" class="pt-3"></label>
+            </div>
+            <div class="col-6">
+                <input type="text" asp-for="Name" class="form-control" value="@Model.Name" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-6">
+                <label asp-for="DisplayOrder" class="pt-3"></label>
+            </div>
+            <div class="col-6">
+                <input type="number" asp-for="DisplayOrder" class="form-control" value="@Model.DisplayOrder" />
+                <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <button type="submit" class="btn btn-primary form-control">Update</button>
+            </div>
+            <div class="col-6">
+                <a asp-controller="Categories" asp-action="Index" class="btn btn-secondary form-control">Back</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial.cshtml" />
+    }
+}

@@ -1,0 +1,39 @@
+﻿@model IEnumerable<Product>
+
+@{
+    ViewBag.Title = "Products";
+}
+
+<div class="container">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Category List</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Products" asp-action="Create" class="btn btn-primary mb-3">
+                <i class="bi bi-plus-circle"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<table id="productsTable" class="table table-bordered table-striped w-100">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>ISBN</th>
+            <th>Author</th>
+            <th>List price</th>
+            <th>Price for 1-50</th>
+            <th>Price for 50+</th>
+            <th>Price for 100+</th>
+            <th style="width:15%">Options</th>
+        </tr>
+    </thead>
+</table>
+
+@section Scripts{
+    <script src="~/js/product.js"></script>
+}
