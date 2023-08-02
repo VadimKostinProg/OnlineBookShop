@@ -51,18 +51,9 @@ namespace BookShop.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                string wwwRootPath = _webHostEnvironment.WebRootPath;
                 if (image != null)
                 {
-                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
-                    string productPath = Path.Combine(wwwRootPath, @"images\product");
-
-                    using (var fileStream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create))
-                    {
-                        image.CopyTo(fileStream);
-                    }
-
-                    product.ImageUrl = @"\images\product\" + fileName;
+                    product.ImageUrl = await _imageService.AddImage(folder: "products", image);
 
                     await _productService.CreateAsync(product);
 
