@@ -11,7 +11,7 @@ namespace BookShop.Core.DTO
         public Guid Id { get; set; }
         public Guid UserId { get; set; }
         public string UserName { get; set; } = null!;
-        public List<OrderItem> Items { get; set; } = new List<OrderItem>();
+        public List<OrderItemResponse> Items { get; set; } = new List<OrderItemResponse>();
         public decimal TotalPrice { get; set; }
     }
 }

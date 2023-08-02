@@ -3,7 +3,7 @@
     public class ShoppingCartResponse
     {
         public Guid UserId { get; set; }
-        public List<OrderItem> Items { get; set; } = new List<OrderItem>();
+        public List<OrderItemResponse> Items { get; set; } = new List<OrderItemResponse>();
         public decimal TotalPrice { get; set; }
     }
 }

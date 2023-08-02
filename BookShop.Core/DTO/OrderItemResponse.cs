@@ -1,6 +1,6 @@
 ﻿namespace BookShop.Core.DTO
 {
-    public class OrderItem
+    public class OrderItemResponse
     {
         public Guid ProductId { get; set; }
         public string ProductName { get; set; } = null!;
