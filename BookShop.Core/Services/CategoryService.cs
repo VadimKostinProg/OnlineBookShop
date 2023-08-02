@@ -85,12 +85,12 @@ namespace BookShop.Core.Services
             if (!(await _repository.ExistsAsync<Category>(category => category.Id == request.Id)))
                 throw new ArgumentException("Category with such Id is not found.");
 
-            if (!(await _repository.ExistsAsync<Category>(category => category.Id != request.Id &&
-                                                          category.Name == request.Name)))
+            if (await _repository.ExistsAsync<Category>(category => category.Id != request.Id &&
+                                                        category.Name == request.Name))
                 throw new ArgumentException("Category with such name is already exists.");
 
-            if (!(await _repository.ExistsAsync<Category>(category => category.Id != request.Id &&
-                                                          category.DisplayOrder == request.DisplayOrder)))
+            if (await _repository.ExistsAsync<Category>(category => category.Id != request.Id &&
+                                                        category.DisplayOrder == request.DisplayOrder))
                 throw new ArgumentException("Category with such discplay order is already exists.");
 
             var category = request.ToCategory();
