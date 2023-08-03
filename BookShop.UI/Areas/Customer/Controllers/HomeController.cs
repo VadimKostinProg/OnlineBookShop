@@ -19,7 +19,7 @@ namespace BookShop.Areas.Customer.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var products = _productService.GetAllAsync();
+            var products = await _productService.GetAllAsync();
             return View(products);
         }
 
