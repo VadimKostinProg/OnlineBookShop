@@ -1,0 +1,29 @@
+﻿@model LoginDTO
+
+@{
+    ViewBag.Title = "Login";
+}
+
+<form asp-action="Login" method="post">
+    <div class="container">
+        <div class="row mb-3">
+            <div class="col-4">
+                <label asp-for="Email" class="form-control" >Email:</label>
+            </div>
+            <div class="col-8">
+                <input asp-for="Email" class="form-control" />
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-4">
+                <label asp-for="Password" class="form-control">Password:</label>
+            </div>
+            <div class="col-8">
+                <input type="password" asp-for="Password" class="form-control" />
+            </div>
+        </div>
+        <div class="row">
+            <button type="submit" class="btn btn-primary">Login</button>
+        </div>
+    </div>
+</form>

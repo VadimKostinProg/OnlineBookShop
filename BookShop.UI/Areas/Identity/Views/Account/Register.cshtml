@@ -1,0 +1,53 @@
+﻿@model RegisterDTO
+
+@{
+    ViewBag.Title = "Register";
+}
+
+<form asp-action="Register" method="post">
+    <div class="container">
+        <div class="row mb-3">
+            <div class="col-4">
+                <label asp-for="PersonName" class="form-control" >Name:</label>
+            </div>
+            <div class="col-8">
+                <input asp-for="PersonName" class="form-control" />
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-4">
+                <label asp-for="Email" class="form-control">Email:</label>
+            </div>
+            <div class="col-8">
+                <input asp-for="Email" class="form-control" />
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-4">
+                <label asp-for="Phone" class="form-control">Phone:</label>
+            </div>
+            <div class="col-8">
+                <input asp-for="Phone" class="form-control" />
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-4">
+                <label asp-for="Password" class="form-control">Password:</label>
+            </div>
+            <div class="col-8">
+                <input type="password" asp-for="Password" class="form-control" />
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-4">
+                <label asp-for="ConfirmPassword" class="form-control">Confirm password:</label>
+            </div>
+            <div class="col-8">
+                <input type="password" asp-for="ConfirmPassword" class="form-control" />
+            </div>
+        </div>
+        <div class="row">
+            <button type="submit" class="btn btn-primary">Register</button>
+        </div>
+    </div>
+</form>

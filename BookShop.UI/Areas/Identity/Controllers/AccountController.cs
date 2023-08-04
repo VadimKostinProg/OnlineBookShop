@@ -29,9 +29,28 @@ namespace BookShop.UI.Areas.Identity.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult Register(RegisterDTO registerDTO)
+        public async Task<IActionResult> Register(RegisterDTO registerDTO)
         {
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+            if (!ModelState.IsValid)
+            {
+                return View(registerDTO);
+            }
+
+            var user = new ApplicationUser()
+            {
+                PersonName = registerDTO.PersonName,
+                Email = registerDTO.Email,
+                PhoneNumber = registerDTO.Phone,
+            };
+
+            var result = await _userManager.CreateAsync(user, registerDTO.Password);
+
+            if (result.Succeeded)
+            {
+                return RedirectToAction(nameof(HomeController.Index), "Home");
+            }
+            
+            return View(registerDTO);
         }
 
         [AllowAnonymous]
@@ -48,6 +67,8 @@ namespace BookShop.UI.Areas.Identity.Controllers
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
+        [Authorize]
+        [HttpPost]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
