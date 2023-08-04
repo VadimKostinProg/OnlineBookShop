@@ -33,12 +33,18 @@ namespace BookShop.UI.Areas.Identity.Controllers
         {
             if (!ModelState.IsValid)
             {
+                ViewBag.Errors = ModelState.Values
+                    .SelectMany(temp => temp.Errors)
+                    .Select(temp => temp.ErrorMessage)
+                    .ToList();
+
                 return View(registerDTO);
             }
 
             var user = new ApplicationUser()
             {
                 PersonName = registerDTO.PersonName,
+                UserName = registerDTO.Email,
                 Email = registerDTO.Email,
                 PhoneNumber = registerDTO.Phone,
             };
@@ -47,9 +53,13 @@ namespace BookShop.UI.Areas.Identity.Controllers
 
             if (result.Succeeded)
             {
+                await _userManager.AddToRoleAsync(user, "Customer");
+
+                await _signInManager.SignInAsync(user, isPersistent: false);
+
                 return RedirectToAction(nameof(HomeController.Index), "Home");
             }
-            
+
             return View(registerDTO);
         }
 
@@ -62,9 +72,27 @@ namespace BookShop.UI.Areas.Identity.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult Login(LoginDTO loginDTO)
+        public async Task<IActionResult> Login(LoginDTO loginDTO, string? returnUrl)
         {
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Errors = ModelState.Values.SelectMany(temp => temp.Errors).Select(temp => temp.ErrorMessage);
+                return View(loginDTO);
+            }
+
+            var result = await _signInManager.PasswordSignInAsync(loginDTO.Email, loginDTO.Password, isPersistent: false, lockoutOnFailure: false);
+
+            if (result.Succeeded)
+            {
+                if(!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                {
+                    return LocalRedirect(returnUrl);
+                }
+
+                return RedirectToAction(nameof(HomeController.Index), "Home");
+            }
+
+            return View(loginDTO);
         }
 
         [Authorize]
