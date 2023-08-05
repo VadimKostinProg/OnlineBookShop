@@ -7,6 +7,7 @@ using BookShop.Core.Domain.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using BookShop.Infrastructure;
 using BookShop.Core;
+using BookShop.Infrastructure.DBInitializer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,7 +37,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 builder.Services.AddInfrastructure();
 builder.Services.AddCore();
 
-builder.Services.AddRazorPages();
+builder.Services.AddScoped<IDBInitializer, DBInitializer>();
 
 var app = builder.Build();
 
@@ -55,9 +56,19 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapRazorPages();
+await SeedDatabase();
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+async Task SeedDatabase()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbInitializer = scope.ServiceProvider.GetRequiredService<IDBInitializer>();
+        await dbInitializer.InitializeDB();
+    }
+}
