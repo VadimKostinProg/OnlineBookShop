@@ -46,21 +46,17 @@ namespace BookShop.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit(Guid? categoryId)
+        public async Task<IActionResult> Edit(Guid categoryId)
         {
-            if (categoryId == null)
+            try
             {
-                return BadRequest(categoryId);
+                var category = await _categoryService.GetByIdAsync(categoryId);
+                return View(category.ToCategoryUpdateRequest());
             }
-
-            var category = await _categoryService.GetByIdAsync(categoryId.Value);
-
-            if (category == null)
+            catch(Exception ex)
             {
-                return NotFound(categoryId);
+                return NotFound(ex.Message);
             }
-
-            return View(category);
         }
 
         [HttpPost]
@@ -90,14 +86,15 @@ namespace BookShop.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(Guid categoryId)
         {
-            var category = await _categoryService.GetByIdAsync(categoryId);
-
-            if (category == null)
+            try
             {
-                return NotFound(categoryId);
+                var category = await _categoryService.GetByIdAsync(categoryId);
+                return View(category);
             }
-
-            return View(category);
+            catch(Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpPost]
@@ -109,7 +106,7 @@ namespace BookShop.Areas.Admin.Controllers
             }
             catch(Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
 
             return RedirectToAction("Index");

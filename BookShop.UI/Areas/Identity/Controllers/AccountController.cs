@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BookShop.UI.Areas.Identity.Controllers
 {
+    [Area("Identity")]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -57,7 +58,7 @@ namespace BookShop.UI.Areas.Identity.Controllers
 
                 await _signInManager.SignInAsync(user, isPersistent: false);
 
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                return Redirect("/");
             }
 
             return View(registerDTO);
@@ -89,7 +90,7 @@ namespace BookShop.UI.Areas.Identity.Controllers
                     return LocalRedirect(returnUrl);
                 }
 
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                return Redirect("/");
             }
 
             return View(loginDTO);

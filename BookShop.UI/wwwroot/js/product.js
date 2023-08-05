@@ -8,13 +8,10 @@ function loadDataTable() {
         "columns": [
             { data: 'title', "width": "15%" },
             { data: 'description', "width": "15%" },
-            { data: 'category.name', "width": "15%" },
+            { data: 'categoryName', "width": "15%" },
             { data: 'isbn', "width": "15%" },
             { data: 'author', "width": "15%" },
-            { data: 'listPrice', "width": "15%" },
             { data: 'price', "width": "15%" },
-            { data: 'price50', "width": "15%" },
-            { data: 'price100', "width": "15%" },
             {
                 data: 'id',
                 "render": function (data) {

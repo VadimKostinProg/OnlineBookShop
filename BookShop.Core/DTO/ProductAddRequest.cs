@@ -33,8 +33,7 @@ namespace BookShop.Core.DTO
         [DisplayName("Category")]
         public Guid CategoryId { get; set; }
 
-        [Required]
-        public string ImageUrl { get; set; } = null!;
+        public string? ImageUrl { get; set; }
 
         public Product ToProduct()
         {

@@ -12,6 +12,16 @@ namespace BookShop.Core.DTO
         public Guid Id { get; set; }
         public string Name { get; set; } = null!;
         public int DisplayOrder { get; set; }
+
+        public CategoryUpdateRequest ToCategoryUpdateRequest()
+        {
+            return new CategoryUpdateRequest()
+            {
+                Id = this.Id,
+                Name = this.Name,
+                DisplayOrder = this.DisplayOrder,
+            };
+        }
     }
 
     public static class CategoryExt

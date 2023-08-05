@@ -47,7 +47,7 @@ namespace BookShop.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(ProductAddRequest product, IFormFile? image)
+        public async Task<IActionResult> Create(ProductAddRequest product, IFormFile image)
         {
             if (ModelState.IsValid)
             {
@@ -77,14 +77,10 @@ namespace BookShop.Areas.Admin.Controllers
             return View(product);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Edit(Guid productId)
         {
             var product = await _productService.GetByIdAsync(productId);
-
-            if (product == null)
-            {
-                return BadRequest(productId);
-            }
 
             IEnumerable<SelectListItem> categoryList = (await _categoryService.GetAllAsync())
                 .Select(category => new SelectListItem()
@@ -95,11 +91,11 @@ namespace BookShop.Areas.Admin.Controllers
 
             ViewBag.CategoryList = categoryList;
 
-            return View(product);
+            return View(product.ToProductUpdateRequest());
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(ProductUpdateRequest product, IFormFile? image)
+        public async Task<IActionResult> Edit(ProductUpdateRequest product, IFormFile image)
         {
             try
             {
@@ -131,11 +127,11 @@ namespace BookShop.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostDelete(Guid id)
+        public async Task<IActionResult> Delete(ProductResponse product)
         {
             try
             {
-                await _productService.DeleteAsync(id);
+                await _productService.DeleteAsync(product.Id);
             }
             catch(Exception ex)
             {

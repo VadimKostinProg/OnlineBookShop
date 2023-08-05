@@ -2,10 +2,12 @@
 using System.Diagnostics;
 using BookShop.Core.ServiceContracts;
 using BookShop.Areas.Customer.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BookShop.Areas.Customer.Controllers
 {
     [Area("Customer")]
+    [AllowAnonymous]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

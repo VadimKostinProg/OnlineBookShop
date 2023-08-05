@@ -74,9 +74,9 @@ namespace BookShop.Infrastructure.Repositories
 
         public async Task<T?> GetByIdAsync<T>(Guid id, params string[] includeStrings) where T : EntityBase
         {
-            var query = (await this.GetAllAsync<T>(predicate: null, includeStrings)).AsQueryable();
+            var query = await this.GetAllAsync<T>(predicate: null, includeStrings);
 
-            return await query.FirstOrDefaultAsync(entity => entity.Id == id);
+            return query.FirstOrDefault(entity => entity.Id == id);
         }
 
         public async Task UpdateAsync<T>(T entity) where T : EntityBase
