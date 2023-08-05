@@ -38,7 +38,9 @@ namespace BookShop.Core.Services
             var product = request.ToProduct();
             await _repository.AddAsync(product);
 
-            return product.ToProductResponse();
+            var insertedProduct = await _repository.GetByIdAsync<Product>(product.Id, includeStrings: "Category");
+
+            return insertedProduct.ToProductResponse();
         }
 
         public async Task DeleteAsync(Guid id)
@@ -109,7 +111,9 @@ namespace BookShop.Core.Services
             var product = request.ToProduct();
             await _repository.UpdateAsync(product);
 
-            return product.ToProductResponse();
+            var updatedProduct = await _repository.GetByIdAsync<Product>(product.Id, includeStrings: "Category");
+
+            return updatedProduct.ToProductResponse();
         }
     }
 }
