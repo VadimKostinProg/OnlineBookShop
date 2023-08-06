@@ -20,7 +20,7 @@ namespace BookShop.Core.Services
             _userManager = userManager;
         }
 
-        public async Task AddShoppingCartItemAsync(ShoppingCartItemAddRequest request)
+        public async Task SetShoppingCartItemAsync(ShoppingCartItemAddRequest request)
         {
             //Validation
             if (request is null)
@@ -35,11 +35,22 @@ namespace BookShop.Core.Services
             if (request.Count < 1 || request.Count > 1000)
                 throw new ArgumentException("Amount of product must be between 1 and 1000");
 
-            var shoppingCart = request.ToShoppingCart();
-            await _repository.AddAsync(shoppingCart);
+            var shoppingCart = await _repository.FirstOrDefaultAsync<ShoppingCart>(item =>
+            item.UserId == request.UserId && item.ProductId == request.ProductId);
+
+            var shoppingCartToSet = request.ToShoppingCart();
+
+            if (shoppingCart is null)
+            {
+                await _repository.AddAsync(shoppingCartToSet);
+                return;
+            }
+            
+            shoppingCartToSet.Id = shoppingCart.Id;
+            await _repository.UpdateAsync(shoppingCartToSet);
         }
 
-        public async Task DeleteShoppingCartAsync(Guid userId)
+        public async Task ClearShoppingCartAsync(Guid userId)
         {
             var shoppingCarts = await _repository.GetAllAsync<ShoppingCart>(shoppingCart => shoppingCart.UserId == userId);
 
@@ -98,6 +109,23 @@ namespace BookShop.Core.Services
             }
 
             return orderItems;
+        }
+
+        public async Task DeleteShoppingCartItemAsync(Guid userId, Guid productId)
+        {
+            if (!(await _repository.ExistsAsync<Product>(product => product.Id == productId)))
+                throw new ArgumentException("Product with such Id does not exist.");
+
+            if (await _userManager.FindByIdAsync(userId.ToString()) is null)
+                throw new ArgumentException("User with such Id does not exist.");
+
+            var shoppingCartItem = await _repository.FirstOrDefaultAsync<ShoppingCart>(item => 
+            item.UserId == userId && item.ProductId == productId);
+
+            if (shoppingCartItem is null)
+                throw new KeyNotFoundException("Shopping cart item such user and product is not found.");
+
+            await _repository.DeleteAsync<ShoppingCart>(shoppingCartItem.Id);
         }
     }
 }
