@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BookShop.Core.DTO
 {
-    public class ShoppingCartItemAddRequest
+    public class ShoppingCartItemSetRequest
     {
         [Required]
         public Guid UserId { get; set; }

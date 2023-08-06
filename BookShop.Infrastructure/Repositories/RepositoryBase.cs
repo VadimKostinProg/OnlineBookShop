@@ -52,7 +52,7 @@ namespace BookShop.Infrastructure.Repositories
         {
             var query = (await this.GetAllAsync<T>(predicate: null, includeStrings)).AsQueryable();
 
-            return await query.FirstOrDefaultAsync(predicate);
+            return query.FirstOrDefault(predicate);
         }
 
         public async Task<IEnumerable<T>> GetAllAsync<T>(Expression<Func<T, bool>>? predicate = null, params string[] includeStrings) where T : EntityBase

@@ -20,7 +20,7 @@ namespace BookShop.Core.Services
                 throw new ArgumentNullException("Discount is null or empty.");
 
             if (!(await _repository.ExistsAsync<Product>(product => product.Id == request.ProductId)))
-                throw new ArgumentException("Product with such Id is not found.");
+                throw new KeyNotFoundException("Product with such Id is not found.");
 
             var discount = await _repository.FirstOrDefaultAsync<Discount>(discount =>
             discount.ProductId == request.ProductId && discount.Count == request.Count);
@@ -40,7 +40,7 @@ namespace BookShop.Core.Services
         public async Task DeleteAllDiscountsAsync(Guid productId)
         {
             if (!(await _repository.ExistsAsync<Product>(product => product.Id == productId)))
-                throw new ArgumentException("Product with such Id is not found.");
+                throw new KeyNotFoundException("Product with such Id is not found.");
 
             var discounts = await _repository.GetAllAsync<Discount>(discount => discount.ProductId == productId);
 
@@ -53,7 +53,7 @@ namespace BookShop.Core.Services
         public async Task DeleteDiscountAsync(Guid productId, int count)
         {
             if (!(await _repository.ExistsAsync<Product>(product => product.Id == productId)))
-                throw new ArgumentException("Product with such Id is not found.");
+                throw new KeyNotFoundException("Product with such Id is not found.");
 
             var discount = await _repository.FirstOrDefaultAsync<Discount>(discount => 
             discount.ProductId == productId && discount.Count == count);
@@ -67,7 +67,7 @@ namespace BookShop.Core.Services
         public async Task<double> GetDiscountByProductAsync(Guid productId, int count)
         {
             if (!(await _repository.ExistsAsync<Product>(product => product.Id == productId)))
-                throw new ArgumentException("Product with such Id is not found.");
+                throw new KeyNotFoundException("Product with such Id is not found.");
 
             var discount = await _repository.FirstOrDefaultAsync<Discount>(discount =>
             discount.ProductId == productId && discount.Count == count);

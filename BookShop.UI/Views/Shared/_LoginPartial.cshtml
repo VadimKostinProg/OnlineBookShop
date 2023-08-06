@@ -4,13 +4,30 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
+@{
+    var user = await UserManager.GetUserAsync(User);
+
+    Guid userId = Guid.Empty;
+
+    if (user != null)
+    {
+        userId = user.Id;
+    }
+}
+
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
+        <a class="text-secondary"
+           asp-area="Customer"
+           asp-controller="ShoppingCart"
+           asp-action="Index"
+           asp-route-userId="@userId">Basket</a>
+
         <li class="nav-item">
-            <form class="form-inline" 
-                  asp-area="Identity" asp-controller="Account" asp-action="Logout" 
-                  method="post">
+            <form class="form-inline"
+              asp-area="Identity" asp-controller="Account" asp-action="Logout"
+              method="post">
                 <button id="logout" type="submit" class="nav-link btn btn-link border-0">Logout</button>
             </form>
         </li>

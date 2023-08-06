@@ -8,11 +8,12 @@ namespace BookShop.Core.ServiceContracts
     public interface IShoppingCartService
     {
         /// <summary>
-        /// Method for setting item in the shopping cart.
+        /// Method for setting item in the shopping cart. If there is no shopping cart item for certain user and product
+        /// in the data base, new item will be created, otherwise - existing item will be updated.
         /// </summary>
         /// <param name="request">Shopping cart set request DTO model with information
         /// of the customer and item to set.</param>
-        Task SetShoppingCartItemAsync(ShoppingCartItemAddRequest request);
+        Task SetShoppingCartItemAsync(ShoppingCartItemSetRequest request);
 
         /// <summary>
         /// Method for reading shopping cart items for the certain user.

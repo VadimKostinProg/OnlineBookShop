@@ -8,7 +8,8 @@ namespace BookShop.Core.ServiceContracts
     public interface IDiscountService
     {
         /// <summary>
-        /// Method for creating new discount for product.
+        /// Method for creating new discount for product. If there is no discount for certain product and amount
+        /// in the data base, new discount will be created, otherwise - existing discount will be updated.
         /// </summary>
         /// <param name="request">Discount set request DTO model, which contains information
         /// about product, amount of product and amount of discount.</param>

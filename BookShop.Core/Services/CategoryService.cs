@@ -78,7 +78,7 @@ namespace BookShop.Core.Services
                 throw new ArgumentNullException("Category object is null or empty.");
 
             if (!(await _repository.ExistsAsync<Category>(category => category.Id == request.Id)))
-                throw new ArgumentException("Category with such Id is not found.");
+                throw new KeyNotFoundException("Category with such Id is not found.");
 
             if (await _repository.ExistsAsync<Category>(category => category.Id != request.Id &&
                                                         category.Name == request.Name))

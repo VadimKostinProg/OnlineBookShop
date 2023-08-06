@@ -101,7 +101,7 @@ namespace BookShop.Core.Services
                 throw new ArgumentException("Product with such ISBN already exists.");
 
             if (!(await _repository.ExistsAsync<Category>(category => category.Id == request.CategoryId)))
-                throw new ArgumentException("Category of product does not exist.");
+                throw new KeyNotFoundException("Category with such Id is not found.");
 
             var product = request.ToProduct();
             await _repository.UpdateAsync(product);

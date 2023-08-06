@@ -20,17 +20,17 @@ namespace BookShop.Core.Services
             _userManager = userManager;
         }
 
-        public async Task SetShoppingCartItemAsync(ShoppingCartItemAddRequest request)
+        public async Task SetShoppingCartItemAsync(ShoppingCartItemSetRequest request)
         {
             //Validation
             if (request is null)
                 throw new ArgumentNullException("Shopping cart is null or empty.");
 
             if (!(await _repository.ExistsAsync<Product>(product => product.Id == request.ProductId)))
-                throw new ArgumentException("Product with such Id does not exist.");
+                throw new KeyNotFoundException("Product with such Id does not exist.");
 
             if (await _userManager.FindByIdAsync(request.UserId.ToString()) is null)
-                throw new ArgumentException("User with such Id does not exist.");
+                throw new KeyNotFoundException("User with such Id does not exist.");
 
             if (request.Count < 1 || request.Count > 1000)
                 throw new ArgumentException("Amount of product must be between 1 and 1000");
@@ -63,7 +63,7 @@ namespace BookShop.Core.Services
         public async Task<ShoppingCartResponse> GetShoppingCartByUserAsync(Guid userId)
         {
             if (await _userManager.FindByIdAsync(userId.ToString()) is null)
-                throw new ArgumentException("User with such Id does not exist.");
+                throw new KeyNotFoundException("User with such Id does not exist.");
 
             var orderItems = await this.GetOrderItemsAsync(userId);
 
@@ -114,10 +114,10 @@ namespace BookShop.Core.Services
         public async Task DeleteShoppingCartItemAsync(Guid userId, Guid productId)
         {
             if (!(await _repository.ExistsAsync<Product>(product => product.Id == productId)))
-                throw new ArgumentException("Product with such Id does not exist.");
+                throw new KeyNotFoundException("Product with such Id does not exist.");
 
             if (await _userManager.FindByIdAsync(userId.ToString()) is null)
-                throw new ArgumentException("User with such Id does not exist.");
+                throw new KeyNotFoundException("User with such Id does not exist.");
 
             var shoppingCartItem = await _repository.FirstOrDefaultAsync<ShoppingCart>(item => 
             item.UserId == userId && item.ProductId == productId);
