@@ -1,8 +1,6 @@
 ﻿using BookShop.Core.ServiceContracts;
-using Dimain.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using System;
 
 namespace BookShop.Core.Services
 {

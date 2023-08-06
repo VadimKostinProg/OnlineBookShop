@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Dimain.Entities
+namespace BookShop.Core.Domain.Entities
 {
     public class ShoppingCart : EntityBase
     {

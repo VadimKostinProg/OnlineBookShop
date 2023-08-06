@@ -2,7 +2,6 @@
 using BookShop.Core.Domain.RepositoryContracts;
 using BookShop.Core.DTO;
 using BookShop.Core.ServiceContracts;
-using Dimain.Entities;
 using Microsoft.AspNetCore.Identity;
 
 namespace BookShop.Core.Services
@@ -89,6 +88,7 @@ namespace BookShop.Core.Services
                 {
                     ProductId = shoppingCart.ProductId,
                     ProductName = shoppingCart.Product.Title,
+                    ImageUrl = shoppingCart.Product.ImageUrl,
                     Count = shoppingCart.Count,
                     IsDiscountActive = isDiscountActive,
                     Price = price

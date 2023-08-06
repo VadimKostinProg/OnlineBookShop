@@ -16,7 +16,8 @@ namespace BookShop.Core
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IImageService, ImageService>();
-            //services.AddScoped<IShoppingCartService, ShoppingCartService>();
+            services.AddScoped<IShoppingCartService, ShoppingCartService>();
+            services.AddScoped<IDiscountService, DiscountService>();
 
             return services;
         }

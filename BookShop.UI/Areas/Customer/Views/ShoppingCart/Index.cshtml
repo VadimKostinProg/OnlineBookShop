@@ -1,0 +1,46 @@
+﻿@model ShoppingCartResponse
+
+@{
+    ViewBag.Title = "Shopping cart";
+}
+
+<form method="post">
+    <div class="conatiner w-75 border box-shadow">
+        <table>
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Product</th>
+                    <th>Count</th>
+                    <th>Discount</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    <br />
+                    <tr>
+                        <td>
+                            <img src="@item.ImageUrl" class="card-img box-shadow" />
+                        </td>
+                        <td>@item.ProductName</td>
+                        <td>@item.Count</td>
+                        <td>
+                            @if (item.IsDiscountActive)
+                            {
+                                <p>True</p>
+                            }
+                        </td>
+                        <td>$@item.Price</td>
+                    </tr>
+                }
+                <br />
+                <tr>
+                    <td rowspan="4">Total:</td>
+                    <td>$@Model.TotalPrice</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</form>

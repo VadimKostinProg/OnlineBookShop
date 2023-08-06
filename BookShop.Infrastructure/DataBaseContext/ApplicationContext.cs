@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using Dimain.Entities;
 using BookShop.Core.Domain.Entities;
 
 namespace BookShop.Infrastructure.DataBaseContext

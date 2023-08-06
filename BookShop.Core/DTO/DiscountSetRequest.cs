@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BookShop.Core.Domain.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace BookShop.Core.DTO
 {
@@ -14,5 +15,16 @@ namespace BookShop.Core.DTO
         [Required]
         [Range(1, 100)]
         public double DiscountAmount { get; set; }
+
+        public Discount ToDiscount()
+        {
+            return new Discount()
+            {
+                Id = Guid.NewGuid(),
+                ProductId = this.ProductId,
+                Count = this.Count,
+                DiscountAmount = this.DiscountAmount
+            };
+        }
     }
 }

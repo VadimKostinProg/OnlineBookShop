@@ -1,12 +1,7 @@
-﻿using BookShop.Core.Domain.RepositoryContracts;
+﻿using BookShop.Core.Domain.Entities;
+using BookShop.Core.Domain.RepositoryContracts;
 using BookShop.Core.DTO;
 using BookShop.Core.ServiceContracts;
-using Dimain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BookShop.Core.Services
 {

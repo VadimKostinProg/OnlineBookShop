@@ -1,9 +1,8 @@
-﻿using BookShop.Core.Domain.Entities;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Dimain.Entities
+namespace BookShop.Core.Domain.Entities
 {
     public class Product : EntityBase
     {

@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Dimain.Entities
+namespace BookShop.Core.Domain.Entities
 {
     public class Category : EntityBase
     {

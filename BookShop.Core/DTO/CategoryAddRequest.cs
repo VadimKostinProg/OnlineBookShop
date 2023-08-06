@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
-using Dimain.Entities;
+using BookShop.Core.Domain.Entities;
 
 namespace BookShop.Core.DTO
 {

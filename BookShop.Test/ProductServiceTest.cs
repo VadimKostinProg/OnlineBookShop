@@ -1,15 +1,9 @@
-﻿using Azure.Core;
+﻿using BookShop.Core.Domain.Entities;
 using BookShop.Core.Domain.RepositoryContracts;
 using BookShop.Core.DTO;
 using BookShop.Core.Services;
-using Dimain.Entities;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BookShop.Test
 {
