@@ -5,8 +5,8 @@
 }
 
 <form method="post">
-    <div class="conatiner w-75 border box-shadow">
-        <table>
+    <div class="container-fluid">
+        <table class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>Image</th>
@@ -22,7 +22,7 @@
                     <br />
                     <tr>
                         <td>
-                            <img src="@item.ImageUrl" class="card-img box-shadow" />
+                            <img src="@item.ImageUrl" class="img-thumbnail box-shadow" />
                         </td>
                         <td>@item.ProductName</td>
                         <td>@item.Count</td>
@@ -37,7 +37,7 @@
                 }
                 <br />
                 <tr>
-                    <td rowspan="4">Total:</td>
+                    <td colspan="4">Total:</td>
                     <td>$@Model.TotalPrice</td>
                 </tr>
             </tbody>

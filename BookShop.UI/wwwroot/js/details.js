@@ -20,6 +20,7 @@ button.addEventListener('click', async function () {
     })
     .then(result => {
         console.log(result);
+        window.location.href = '/';
     })
     .catch(error => {
         console.error('Error:', error);

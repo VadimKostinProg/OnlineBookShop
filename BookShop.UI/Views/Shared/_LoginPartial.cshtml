@@ -18,11 +18,15 @@
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
-        <a class="text-secondary"
+        <li class="nav-item">
+            <a class="text-secondary"
            asp-area="Customer"
            asp-controller="ShoppingCart"
            asp-action="Index"
-           asp-route-userId="@userId">Basket</a>
+           asp-route-userId="@userId">
+                <img src="~/icons/shopping_cart.png" style="width:50px" />
+            </a>
+        </li>
 
         <li class="nav-item">
             <form class="form-inline"
