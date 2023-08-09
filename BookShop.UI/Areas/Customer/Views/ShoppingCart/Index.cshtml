@@ -4,43 +4,61 @@
     ViewBag.Title = "Shopping cart";
 }
 
-<form method="post">
-    <div class="container-fluid">
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Image</th>
-                    <th>Product</th>
-                    <th>Count</th>
-                    <th>Discount</th>
-                    <th>Price</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.Items)
-                {
-                    <br />
-                    <tr>
-                        <td>
-                            <img src="@item.ImageUrl" class="img-thumbnail box-shadow" />
-                        </td>
-                        <td>@item.ProductName</td>
-                        <td>@item.Count</td>
-                        <td>
-                            @if (item.IsDiscountActive)
-                            {
-                                <p>True</p>
-                            }
-                        </td>
-                        <td>$@item.Price</td>
-                    </tr>
-                }
-                <br />
-                <tr>
-                    <td colspan="4">Total:</td>
-                    <td>$@Model.TotalPrice</td>
-                </tr>
-            </tbody>
-        </table>
+<div id="shoppingCartContainer" class="container-fluid mt-5">
+    <div class="row">
+        <div class="col-6">
+            <h1>Shopping Cart</h1>
+        </div>
+        <div class="col-6 text-end">
+            <button class="btn btn-danger" onclick="clearItems('@Model.UserId')">CLEAR</button>
+        </div>
     </div>
-</form>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th style="width:16%">Image</th>
+                <th style="width:16%">Product</th>
+                <th style="width:16%">Discount</th>
+                <th style="width:16%">Price</th>
+                <th style="width:16%">Count</th>
+                <th style="width:16%" colspan="2">Options</th>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+            @for (int i = 0; i < Model.Items.Count; i++)
+            {
+                <tr>
+                    <td>
+                        <img src="@Model.Items[i].ImageUrl" class="img-thumbnail box-shadow" />
+                    </td>
+                    <td>@Model.Items[i].ProductName</td>
+                    <td>
+                        @if (Model.Items[i].IsDiscountActive)
+                        {
+                            <p>True</p>
+                        }
+                    </td>
+                    <td>$@Model.Items[i].Price</td>
+                    <td>
+                        <input type="number" id="count-@i" class="form-control"
+                           oninput="updateItem('@Model.Items[i].ProductId', '@Model.UserId', '@i')"
+                           asp-for="@Model.Items[i].Count" />
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" onclick="deleteItem('@Model.Items[i].ProductId', '@Model.UserId', this)">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td colspan="4">Total:</td>
+                <td id="totalPrice">$@Model.TotalPrice</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script src="~/js/shoppingCart.js"></script>
+}

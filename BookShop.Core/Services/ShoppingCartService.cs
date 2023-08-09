@@ -71,7 +71,7 @@ namespace BookShop.Core.Services
             {
                 UserId = userId,
                 Items = orderItems,
-                TotalPrice = orderItems.Sum(item => item.Price)
+                TotalPrice = orderItems.Sum(item => item.Price * item.Count)
             };
 
             return shoppingCartResponse;

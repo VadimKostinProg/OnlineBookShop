@@ -1,4 +1,5 @@
-﻿using BookShop.Core.DTO;
+﻿using Azure.Core;
+using BookShop.Core.DTO;
 using BookShop.Core.ServiceContracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +11,12 @@ namespace BookShop.UI.Areas.Customer.Controllers
     public class ShoppingCartController : Controller
     {
         private readonly IShoppingCartService _shoppingCartService;
+        private readonly ILogger<ShoppingCartController> _logger;
 
-        public ShoppingCartController(IShoppingCartService shoppingCartService)
+        public ShoppingCartController(IShoppingCartService shoppingCartService, ILogger<ShoppingCartController> logger)
         {
             _shoppingCartService = shoppingCartService;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -26,49 +29,56 @@ namespace BookShop.UI.Areas.Customer.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
         }
 
         #region API CALLS
         [HttpPost]
-        public async Task<IActionResult> SetShoppingCartItem([FromBody] ShoppingCartItemSetRequest request)
+        public async Task<ActionResult<decimal>> SetShoppingCartItem([FromBody] ShoppingCartItemSetRequest request)
         {
             try
             {
                 await _shoppingCartService.SetShoppingCartItemAsync(request);
-                return Ok($"Shopping cart item has been set successfully.");
+                var shoppincCart = await _shoppingCartService.GetShoppingCartByUserAsync(request.UserId);
+                return Ok(shoppincCart.TotalPrice);
             }
             catch (KeyNotFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteShoppingCartItem([FromQuery] Guid userId, [FromQuery] Guid productId)
+        public async Task<ActionResult<decimal>> DeleteShoppingCartItem([FromQuery] Guid userId, [FromQuery] Guid productId)
         {
             try
             {
                 await _shoppingCartService.DeleteShoppingCartItemAsync(userId, productId);
-                return Ok("Shopping cart item has been deleted successfully.");
+                var shoppincCart = await _shoppingCartService.GetShoppingCartByUserAsync(userId);
+                return Ok(shoppincCart.TotalPrice);
             }
             catch(KeyNotFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
         }
 
-        [HttpPost("{userId}")]
-        public async Task<IActionResult> Clear([FromRoute] Guid userId)
+        [HttpPost]
+        public async Task<IActionResult> Clear([FromQuery] Guid userId)
         {
             try
             {
@@ -77,10 +87,12 @@ namespace BookShop.UI.Areas.Customer.Controllers
             }
             catch (KeyNotFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
         }

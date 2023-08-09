@@ -2,12 +2,7 @@
 using BookShop.Core.Domain.RepositoryContracts;
 using BookShop.Infrastructure.DataBaseContext;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BookShop.Infrastructure.Repositories
 {
@@ -57,7 +52,7 @@ namespace BookShop.Infrastructure.Repositories
 
         public async Task<IEnumerable<T>> GetAllAsync<T>(Expression<Func<T, bool>>? predicate = null, params string[] includeStrings) where T : EntityBase
         {
-            var query = _dbContext.Set<T>().AsQueryable();
+            var query = _dbContext.Set<T>().AsNoTracking().AsQueryable();
 
             if(predicate != null)
             {
