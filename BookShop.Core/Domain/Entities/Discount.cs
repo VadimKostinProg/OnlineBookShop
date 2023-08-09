@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,5 +20,8 @@ namespace BookShop.Core.Domain.Entities
         [Required]
         [Range(1, 100)]
         public double DiscountAmount { get; set; }
+
+        [ForeignKey("ProductId")]
+        public Product? Product { get; set; }
     }
 }

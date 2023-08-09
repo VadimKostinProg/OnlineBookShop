@@ -64,6 +64,12 @@ namespace BookShop.Core.Services
             }
         }
 
+        public async Task<IEnumerable<DiscountResponse>> GetAllDiscountsAsync()
+        {
+            var discounts = await _repository.GetAllAsync<Discount>(predicate: null, includeStrings: "Product");
+            return discounts.Select(discount => discount.ToDiscountResponse()).ToList();
+        }
+
         public async Task<double> GetDiscountByProductAsync(Guid productId, int count)
         {
             if (!(await _repository.ExistsAsync<Product>(product => product.Id == productId)))

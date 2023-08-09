@@ -16,6 +16,12 @@ namespace BookShop.Core.ServiceContracts
         Task CreateDiscountAsync(DiscountSetRequest request);
 
         /// <summary>
+        /// Method for readiong all discounts.
+        /// </summary>
+        /// <returns>Collection IEnumerable of discount respponse DTO model.</returns>
+        Task<IEnumerable<DiscountResponse>> GetAllDiscountsAsync();
+
+        /// <summary>
         /// Method for reading the discount amount for product.
         /// </summary>
         /// <param name="productId">Guid of product to read the discount amount.</param>
