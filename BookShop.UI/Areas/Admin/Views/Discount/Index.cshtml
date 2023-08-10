@@ -1,0 +1,64 @@
+﻿@model IEnumerable<DiscountResponse>
+
+@{
+    ViewBag.Title = "Discount management";
+}
+
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-6">
+            <h3>Discount managment</h3>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Discount" asp-action="SetDiscount" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i>
+            </a>
+        </div>
+    </div>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th class="w-25">Product</th>
+                <th class="w-75">Count - Discount</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (DiscountResponse discount in Model)
+            {
+                <tr id="@discount.ProductId-row">
+                    <td>@discount.ProductName</td>
+                    <td colspan="2">
+                        <table id="@discount.ProductId-nestedTable" class="table">
+                            <tdoby>
+                                <tr>
+                                    <td colspan="2">Delete all:</td>
+                                    <td>
+                                        <button onclick="deleteAllDiscounts('@discount.ProductId')" class="btn btn-danger">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                @foreach (var pair in discount.CountDiscountSet)
+                                {
+                                    <tr id="@discount.ProductId-@pair.Key-row">
+                                        <td>@pair.Key</td>
+                                        <td>@pair.Value%</td>
+                                        <td>
+                                            <button onclick="deleteDiscount('@discount.ProductId', '@pair.Key')" class="btn btn-danger">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tdoby>
+                        </table>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script src="~/js/discount.js"></script>
+}

@@ -88,7 +88,7 @@ namespace BookShop.Core.Services
             // Converting ShoppingCart entity to OrderItemResponse
             foreach (var shoppingCart in shoppingCarts)
             {
-                var discount = await _discountService.GetDiscountByProductAsync(shoppingCart.ProductId, shoppingCart.Count);
+                var discount = await _discountService.GetDiscountAmountByProductAsync(shoppingCart.ProductId, shoppingCart.Count);
                 bool isDiscountActive = discount == 0;
 
                 var price = isDiscountActive ?

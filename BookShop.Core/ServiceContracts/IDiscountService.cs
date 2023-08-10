@@ -13,7 +13,7 @@ namespace BookShop.Core.ServiceContracts
         /// </summary>
         /// <param name="request">Discount set request DTO model, which contains information
         /// about product, amount of product and amount of discount.</param>
-        Task CreateDiscountAsync(DiscountSetRequest request);
+        Task SetDiscountAsync(DiscountSetRequest request);
 
         /// <summary>
         /// Method for readiong all discounts.
@@ -28,7 +28,7 @@ namespace BookShop.Core.ServiceContracts
         /// <param name="count">Count of product to read the discount amount.</param>
         /// <returns>Value of discount amount between 1 and 100, if discount for the 
         /// product does not exist, it returns 0.</returns>
-        Task<double> GetDiscountByProductAsync(Guid productId, int count);
+        Task<double> GetDiscountAmountByProductAsync(Guid productId, int count);
 
         /// <summary>
         /// Method for deleting the all discounts for the product.

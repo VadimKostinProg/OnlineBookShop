@@ -15,15 +15,19 @@ namespace BookShop.Areas.Admin.Controllers
         private readonly IImageService _imageService;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
+        private readonly ILogger<ProductsController> _logger;
+
         public ProductsController(IProductService productService,
         ICategoryService categoryService,
         IImageService imageService,
-        IWebHostEnvironment webHostEnvironment)
+        IWebHostEnvironment webHostEnvironment,
+        ILogger<ProductsController> logger)
         {
             _productService = productService;
             _categoryService = categoryService;
             _imageService = imageService;
             _webHostEnvironment = webHostEnvironment;
+            _logger = logger;
         }
 
         public async Task<IActionResult> Index()
@@ -132,22 +136,47 @@ namespace BookShop.Areas.Admin.Controllers
             try
             {
                 await _productService.DeleteAsync(product.Id);
+                return RedirectToAction("Index");
+            }
+            catch(KeyNotFoundException ex)
+            {
+                _logger.LogError(ex.Message);
+                return NotFound(ex.Message);
             }
             catch(Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(ex.Message);
             }
-
-            return RedirectToAction("Index");
         }
 
         #region API CALLS
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult> GetAll()
         {
             var products = (await _productService.GetAllAsync()).ToList();
 
             return Json(new { data = products });
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ProductResponse>>> GetProductsByCategory([FromQuery] Guid categoryId)
+        {
+            try
+            {
+                var products = await _productService.GetFilteredAsync(product => product.CategoryId == categoryId);
+                return Ok(products);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                _logger.LogError(ex.Message);
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
         }
         #endregion
     }

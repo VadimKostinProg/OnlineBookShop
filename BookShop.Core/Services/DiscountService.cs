@@ -14,7 +14,7 @@ namespace BookShop.Core.Services
             _repository = repository;
         }
 
-        public async Task CreateDiscountAsync(DiscountSetRequest request)
+        public async Task SetDiscountAsync(DiscountSetRequest request)
         {
             if(request == null) 
                 throw new ArgumentNullException("Discount is null or empty.");
@@ -67,10 +67,19 @@ namespace BookShop.Core.Services
         public async Task<IEnumerable<DiscountResponse>> GetAllDiscountsAsync()
         {
             var discounts = await _repository.GetAllAsync<Discount>(predicate: null, includeStrings: "Product");
-            return discounts.Select(discount => discount.ToDiscountResponse()).ToList();
+
+            var result = discounts.GroupBy(discount => discount.ProductId)
+                                  .Select(group => new DiscountResponse
+                                  {
+                                      ProductId = group.Key,
+                                      ProductName = group.First().Product.Title,
+                                      CountDiscountSet = group.ToDictionary(discount => discount.Count, discount => discount.DiscountAmount)
+                                  }).ToList();
+
+            return result;
         }
 
-        public async Task<double> GetDiscountByProductAsync(Guid productId, int count)
+        public async Task<double> GetDiscountAmountByProductAsync(Guid productId, int count)
         {
             if (!(await _repository.ExistsAsync<Product>(product => product.Id == productId)))
                 throw new KeyNotFoundException("Product with such Id is not found.");
