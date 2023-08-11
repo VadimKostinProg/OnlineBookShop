@@ -30,7 +30,7 @@ function updateItem(productIdVal, userIdVal, itemNumberVal) {
     })
         .then(response => response.json())
         .then(result => {
-            totalPrice.innerHTML = `$${result}`;
+            updateBasket(productIdVal, countVal, result);
         })
         .catch(error => {
             console.error('Error:', error);
@@ -69,6 +69,29 @@ function clearItems(userId) {
         .catch(error => {
             console.error('Error:', error);
         });
+}
+
+function updateBasket(productId, count, shoppingCart) {
+    var item = shoppingCart.items.find(item => item.productId == productId && item.count == count);
+
+    if (!item) {
+        return;
+    }
+
+    let discount = document.getElementById(`${productId}-discount`);
+    let price = document.getElementById(`${productId}-price`);
+
+    if (item.isDiscountActive) {
+        discount.innerHTML = `<p>-${item.discountAmount}%</p>`;
+        price.innerHTML =
+            `<p class="text-danger text-decoration-line-through">$${item.price}</p>` +
+            `<p>$${item.discountPrice}</p>`;
+    } else {
+        discount.innerHTML = '<i class="bi bi-x-square"></i>';
+        price.innerHTML = `<p>$${item.price}</p>`
+    }
+
+    totalPrice.innerHTML = `$${shoppingCart.totalPrice}`;
 }
 
 function showEmptyBasket() {

@@ -36,13 +36,13 @@ namespace BookShop.UI.Areas.Customer.Controllers
 
         #region API CALLS
         [HttpPost]
-        public async Task<ActionResult<decimal>> SetShoppingCartItem([FromBody] ShoppingCartItemSetRequest request)
+        public async Task<ActionResult<ShoppingCartResponse>> SetShoppingCartItem([FromBody] ShoppingCartItemSetRequest request)
         {
             try
             {
                 await _shoppingCartService.SetShoppingCartItemAsync(request);
                 var shoppincCart = await _shoppingCartService.GetShoppingCartByUserAsync(request.UserId);
-                return Ok(shoppincCart.TotalPrice);
+                return Ok(shoppincCart);
             }
             catch (KeyNotFoundException ex)
             {

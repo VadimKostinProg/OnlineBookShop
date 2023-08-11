@@ -32,13 +32,27 @@
                         <img src="@Model.Items[i].ImageUrl" class="img-thumbnail box-shadow" />
                     </td>
                     <td>@Model.Items[i].ProductName</td>
-                    <td>
+                    <td id="@Model.Items[i].ProductId-discount">
                         @if (Model.Items[i].IsDiscountActive)
                         {
-                            <p>True</p>
+                            <p>-@Model.Items[i].DiscountAmount%</p>
+                        }
+                        else
+                        {
+                            <i class="bi bi-x-square"></i>
                         }
                     </td>
-                    <td>$@Model.Items[i].Price</td>
+                    <td id="@Model.Items[i].ProductId-price">
+                        @if (Model.Items[i].IsDiscountActive)
+                        {
+                            <p class="text-danger text-decoration-line-through">$@Model.Items[i].Price</p>
+                            <p>$@Model.Items[i].DiscountPrice</p>
+                        }
+                        else
+                        {
+                            <p>$@Model.Items[i].Price</p>
+                        }
+                    </td>
                     <td>
                         <input type="number" id="count-@i" class="form-control"
                            oninput="updateItem('@Model.Items[i].ProductId', '@Model.UserId', '@i')"

@@ -22,6 +22,9 @@ namespace BookShop.Core.Services
             if (!(await _repository.ExistsAsync<Product>(product => product.Id == request.ProductId)))
                 throw new KeyNotFoundException("Product with such Id is not found.");
 
+            if (!(await ValidateDiscountAmount(request)))
+                throw new ArgumentException("Discount amount should be more then previos by count discount and less then next one.");
+
             var discount = await _repository.FirstOrDefaultAsync<Discount>(discount =>
             discount.ProductId == request.ProductId && discount.Count == request.Count);
 
@@ -35,6 +38,21 @@ namespace BookShop.Core.Services
 
             discountToSet.Id = discount.Id;
             await _repository.UpdateAsync(discountToSet);
+        }
+
+        private async Task<bool> ValidateDiscountAmount(DiscountSetRequest request)
+        {
+            var discountsLower = await _repository.GetAllAsync<Discount>(discount => 
+            discount.ProductId == request.ProductId && discount.Count < request.Count);
+
+            var discountsUpper = await _repository.GetAllAsync<Discount>(discount =>
+            discount.ProductId == request.ProductId && discount.Count > request.Count);
+
+            double discountLower = discountsLower.Count() == 0 ? 0 : discountsLower.Max(discount => discount.DiscountAmount);
+
+            double discountUpper = discountsUpper.Count() == 0 ? 100 : discountsUpper.Min(discount => discount.DiscountAmount);
+
+            return discountLower < request.DiscountAmount && request.DiscountAmount < discountUpper;
         }
 
         public async Task DeleteAllDiscountsAsync(Guid productId)
@@ -84,10 +102,17 @@ namespace BookShop.Core.Services
             if (!(await _repository.ExistsAsync<Product>(product => product.Id == productId)))
                 throw new KeyNotFoundException("Product with such Id is not found.");
 
-            var discount = await _repository.FirstOrDefaultAsync<Discount>(discount =>
-            discount.ProductId == productId && discount.Count == count);
+            var discounts = await _repository.GetAllAsync<Discount>(discount => 
+            discount.ProductId == productId && discount.Count <= count);
 
-            return discount is null ? 0 : discount.DiscountAmount;
+            if(discounts.Count() == 0)
+            {
+                return 0;
+            }
+
+            var discount = discounts.Max(discount => discount.DiscountAmount);
+
+            return discount;
         }
     }
 }

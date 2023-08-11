@@ -71,7 +71,7 @@ namespace BookShop.Core.Services
             {
                 UserId = userId,
                 Items = orderItems,
-                TotalPrice = orderItems.Sum(item => item.Price * item.Count)
+                TotalPrice = orderItems.Sum(item => item.DiscountPrice * item.Count)
             };
 
             return shoppingCartResponse;
@@ -89,11 +89,6 @@ namespace BookShop.Core.Services
             foreach (var shoppingCart in shoppingCarts)
             {
                 var discount = await _discountService.GetDiscountAmountByProductAsync(shoppingCart.ProductId, shoppingCart.Count);
-                bool isDiscountActive = discount == 0;
-
-                var price = isDiscountActive ?
-                    (decimal)((double)shoppingCart.Product.Price * (1 - discount)) :
-                    shoppingCart.Product.Price;
 
                 var orderItem = new OrderItemResponse()
                 {
@@ -101,8 +96,9 @@ namespace BookShop.Core.Services
                     ProductName = shoppingCart.Product.Title,
                     ImageUrl = shoppingCart.Product.ImageUrl,
                     Count = shoppingCart.Count,
-                    IsDiscountActive = isDiscountActive,
-                    Price = price
+                    IsDiscountActive = discount > 0,
+                    Price = shoppingCart.Product.Price,
+                    DiscountAmount = discount
                 };
 
                 orderItems.Add(orderItem);
