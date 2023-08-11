@@ -19,13 +19,22 @@ namespace BookShop.Core.Domain.Entities
         [Required]
         public Guid ProductId { get; set; }
 
+        [ForeignKey("ProductId")]
+        public Product? Product { get; set; }
+
         [Required]
         public int Count { get; set; }
+
+        [Required]
+        public decimal Price { get; set; }
 
         [Required]
         public bool IsDiscountActive { get; set; }
 
         [Required]
-        public decimal Price { get; set; }
+        public double DiscountAmount { get; set; }
+
+        [Required]
+        public decimal DiscountPrice { get; set; }
     }
 }

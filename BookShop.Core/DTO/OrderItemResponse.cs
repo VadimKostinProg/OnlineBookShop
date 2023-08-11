@@ -1,4 +1,6 @@
-﻿namespace BookShop.Core.DTO
+﻿using BookShop.Core.Domain.Entities;
+
+namespace BookShop.Core.DTO
 {
     public class OrderItemResponse
     {
@@ -15,6 +17,20 @@
             {
                 return (decimal)((double)Price * (1 - DiscountAmount / 100));
             }
+        }
+
+        public OrderItem ToOrderItem()
+        {
+            return new OrderItem()
+            {
+                Id = Guid.NewGuid(),
+                ProductId = this.ProductId,
+                Count = this.Count,
+                IsDiscountActive = this.IsDiscountActive,
+                Price = this.Price,
+                DiscountAmount = this.DiscountAmount,
+                DiscountPrice = this.DiscountPrice
+            };
         }
     }
 }

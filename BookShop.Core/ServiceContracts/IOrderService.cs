@@ -12,7 +12,7 @@ namespace BookShop.Core.ServiceContracts
     {
         Task ProceedOrderAsync(OrderProceedRequest request);
         Task<OrderResponse> GetByIdAsync(Guid id);
-        Task<IEnumerable<OrderResponse>> GetOrdersAsync(Expression<Func<OrderResponse, bool>> predicate);
+        Task<IEnumerable<OrderResponse>> GetOrdersAsync(Expression<Func<OrderResponse, bool>>? predicate = null);
         Task DeleteOrderAsync(Guid id);
     }
 }
