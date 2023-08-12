@@ -38,7 +38,7 @@ namespace BookShop.Core.Services
         {
             var order = await _repository.GetByIdAsync<Order>(id, includeStrings: "ApplicationUser");
 
-            if(order is null)
+            if (order is null)
                 throw new KeyNotFoundException("Order with such Id is not found.");
 
             return await ConvertOrderToOrderResponseAsync(order);
@@ -93,16 +93,21 @@ namespace BookShop.Core.Services
             if (await _userManager.FindByIdAsync(request.UserId.ToString()) is null)
                 throw new KeyNotFoundException("User with such Id is not found.");
 
+            var shoppingCart = await _shoppingCartService.GetShoppingCartByUserAsync(request.UserId);
+
+            if (shoppingCart.Items.Count == 0)
+                throw new ArgumentException("Cannot proceed the order! Your basket is empty.");
+
             //Adding order entity
             var order = request.ToOrder();
+            order.TotalPrice = shoppingCart.TotalPrice;
             await _repository.AddAsync(order);
 
             //Adding order items
-            var shoppingCart = await _shoppingCartService.GetShoppingCartByUserAsync(request.UserId);
-
             foreach (var item in shoppingCart.Items)
             {
                 var orderItem = item.ToOrderItem();
+                orderItem.OrderId = order.Id;
                 await _repository.AddAsync(orderItem);
             }
 

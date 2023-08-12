@@ -24,7 +24,8 @@ namespace BookShop.Core.DTO
                 City = this.City,
                 Address = this.Address,
                 PostalCode = this.PostalCode,
-                PhoneNumber = this.PhoneNumber
+                PhoneNumber = this.PhoneNumber,
+                OrderDateTime = DateTime.Now
             };
         }
     }

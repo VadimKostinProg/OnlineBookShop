@@ -11,11 +11,13 @@ namespace BookShop.UI.Areas.Customer.Controllers
     public class ShoppingCartController : Controller
     {
         private readonly IShoppingCartService _shoppingCartService;
+        private readonly IOrderService _orderService;
         private readonly ILogger<ShoppingCartController> _logger;
 
-        public ShoppingCartController(IShoppingCartService shoppingCartService, ILogger<ShoppingCartController> logger)
+        public ShoppingCartController(IShoppingCartService shoppingCartService, IOrderService orderService, ILogger<ShoppingCartController> logger)
         {
             _shoppingCartService = shoppingCartService;
+            _orderService = orderService;
             _logger = logger;
         }
 
@@ -31,6 +33,47 @@ namespace BookShop.UI.Areas.Customer.Controllers
             {
                 _logger.LogError(ex.Message);
                 return NotFound(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Checkout(Guid userId)
+        {
+            try
+            {
+                var shoppincCart = await _shoppingCartService.GetShoppingCartByUserAsync(userId);
+                ViewBag.ShoppingCart = shoppincCart;
+                return View();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                _logger.LogError(ex.Message);
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Checkout(OrderProceedRequest request)
+        {
+            try
+            {
+                await _orderService.ProceedOrderAsync(request);
+                return Redirect("/");
+            }
+            catch (KeyNotFoundException ex)
+            {
+                _logger.LogError(ex.Message);
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 

@@ -30,5 +30,8 @@ namespace BookShop.Core.Domain.Entities
 
         [Required]
         public decimal TotalPrice { get; set; }
+
+        [Required]
+        public DateTime OrderDateTime { get; set; }
     }
 }

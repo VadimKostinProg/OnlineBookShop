@@ -13,7 +13,7 @@
             <button class="btn btn-danger" onclick="clearItems('@Model.UserId')">CLEAR</button>
         </div>
     </div>
-    <table class="table table-bordered table-striped">
+    <table class="table table-bordered table-striped mb-3">
         <thead>
             <tr>
                 <th style="width:16%">Image</th>
@@ -71,6 +71,9 @@
             </tr>
         </tbody>
     </table>
+    <div class="row">
+        <a asp-area="Customer" asp-controller="ShoppingCart" asp-action="Checkout" asp-route-userId="@Model.UserId" class="btn btn-danger ml-auto">Make order</a>
+    </div>
 </div>
 
 @section Scripts {
