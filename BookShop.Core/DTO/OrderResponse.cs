@@ -13,5 +13,6 @@ namespace BookShop.Core.DTO
         public string UserName { get; set; } = null!;
         public List<OrderItemResponse> Items { get; set; } = new List<OrderItemResponse>();
         public decimal TotalPrice { get; set; }
+        public DateTime OrderDateTime { get; set; }
     }
 }

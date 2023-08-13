@@ -1,0 +1,90 @@
+﻿@model OrderResponse
+
+@{
+    ViewBag.Title = $"Order information - {Model.Id}";
+}
+
+<div class="container border box-shadow mt-5">
+    <h3>Order information</h3>
+    <div class="row mb-3">
+        <div class="col-6">
+            <b>Order Id:</b>
+        </div>
+        <div class="col-6">
+            @Model.Id
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-6">
+            <b>User:</b>
+        </div>
+        <div class="col-6">
+            @Model.UserName
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-6">
+            <b>User Id:</b>
+        </div>
+        <div class="col-6">
+            @Model.UserId
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-6">
+            <b>Date & Time:</b>
+        </div>
+        <div class="col-6">
+            @Model.OrderDateTime
+        </div>
+    </div>
+    <b>Items:</b>
+    <table class="table">
+        <thead>
+            <tr>
+                <th colspan="2">Product</th>
+                <td>Count</td>
+                <td>Discount</td>
+                <td>Price</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td><img src="@item.ImageUrl" class="img-thumbnail box-shadow" /></td>
+                    <td>
+                        @item.ProductName
+                        {@item.ProductId}
+                    </td>
+                    <td>@item.Count</td>
+                    <td>
+                        @if (item.IsDiscountActive)
+                        {
+                            <p>-@item.DiscountAmount%</p>
+                        }
+                        else
+                        {
+                            <i class="bi bi-x-square"></i>
+                        }
+                    </td>
+                    <td>
+                        @if (item.IsDiscountActive)
+                        {
+                            <p class="text-danger text-decoration-line-through">$@item.Price</p>
+                            <p>$@item.DiscountPrice</p>
+                        }
+                        else
+                        {
+                            <p>$@item.Price</p>
+                        }
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td colspan="4">Total price:</td>
+                <td>$@Model.TotalPrice</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

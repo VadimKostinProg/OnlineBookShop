@@ -1,0 +1,59 @@
+﻿@model IEnumerable<OrderResponse>
+
+@{
+    ViewBag.Title = "Orders management";
+}
+
+<div class="container mt-5">
+    <div class="row mb-3">
+        Orders
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th style="width:16px">Date</th>
+                <th style="width:16px">Time</th>
+                <th style="width:16px">User</th>
+                <th style="width:16px">Items</th>
+                <th style="width:16px">Total price</th>
+                <th style="width:16px">Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td>@order.OrderDateTime.ToShortDateString()</td>
+                    <td>@order.OrderDateTime.ToShortTimeString()</td>
+                    <td>@order.UserName</td>
+                    <td>
+                        <table class="table">
+                            <tbody>
+                                @foreach (var item in order.Items)
+                                {
+                                    <tr>
+                                        <td>@item.ProductName</td>
+                                        <td>@item.Count</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </td>
+                    <td>$@order.TotalPrice</td>
+                    <td>
+                        <a asp-action="OrderInfo" asp-route-orderId="@order.Id" class="btn btn-primary">
+                            <i class="bi bi-info-square"></i>
+                        </a>
+                        <button onclick="deleteOrder('@order.Id', this)" class="btn btn-danger">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script src="~/js/orders.js"></script>
+}

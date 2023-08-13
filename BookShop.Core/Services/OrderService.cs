@@ -36,7 +36,7 @@ namespace BookShop.Core.Services
 
         public async Task<OrderResponse> GetByIdAsync(Guid id)
         {
-            var order = await _repository.GetByIdAsync<Order>(id, includeStrings: "ApplicationUser");
+            var order = await _repository.GetByIdAsync<Order>(id, includeStrings: "User");
 
             if (order is null)
                 throw new KeyNotFoundException("Order with such Id is not found.");
@@ -46,7 +46,7 @@ namespace BookShop.Core.Services
 
         public async Task<IEnumerable<OrderResponse>> GetOrdersAsync(Expression<Func<OrderResponse, bool>>? predicate = null)
         {
-            var orders = await _repository.GetAllAsync<Order>(predicate: null, includeStrings: "ApplicationUser");
+            var orders = await _repository.GetAllAsync<Order>(predicate: null, includeStrings: "User");
 
             var result = new List<OrderResponse>();
 
@@ -80,9 +80,10 @@ namespace BookShop.Core.Services
             {
                 Id = order.Id,
                 Items = items,
-                TotalPrice = items.Sum(item => item.DiscountPrice),
+                TotalPrice = order.TotalPrice,
                 UserId = order.UserId,
                 UserName = order.User.PersonName,
+                OrderDateTime= order.OrderDateTime
             };
 
             return orderResponse;
